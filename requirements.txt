@@ -1,0 +1,4 @@
+PyGObject
+PyOpenGl
+black
+mypy
