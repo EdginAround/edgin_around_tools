@@ -24,12 +24,14 @@ class Config:
         image_dir: str,
         skin_name: str,
         animation_file: str,
-        animation_name: str,
+        variant_name: str,
+        action_name: str,
     ) -> None:
         self.sprite_dir = image_dir
         self.skin_name = skin_name
         self.animation_file = animation_file
-        self.animation_name = animation_name
+        self.variant_name = variant_name
+        self.action_name = action_name
 
     @staticmethod
     def from_arguments() -> "Config":
@@ -56,16 +58,30 @@ class Config:
             help="Name of the animation file",
         )
         parser.add_argument(
-            "--animation",
-            dest="animation_name",
+            "--variant",
+            dest="variant_name",
+            type=str,
+            required=False,
+            default="default",
+            help="Name of the animation variant to show",
+        )
+        parser.add_argument(
+            "--action",
+            dest="action_name",
             type=str,
             required=False,
             default="idle",
-            help="Name of the animation to play",
+            help="Name of the animation action to play",
         )
 
         args = parser.parse_args()
-        return Config(args.sprite_dir, args.skin_name, args.animation_file, args.animation_name)
+        return Config(
+            args.sprite_dir,
+            args.skin_name,
+            args.animation_file,
+            args.variant_name,
+            args.action_name,
+        )
 
 
 class GridRenderer:
@@ -151,7 +167,8 @@ class Area(gtk.GLArea):
             self._config.sprite_dir,
             self._config.skin_name,
             self._config.animation_file,
-            self._config.animation_name,
+            self._config.variant_name,
+            self._config.action_name,
             self.size,
         )
 
